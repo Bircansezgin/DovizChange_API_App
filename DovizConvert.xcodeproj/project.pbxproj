@@ -300,6 +300,7 @@
 				DEVELOPMENT_TEAM = CFBPBU763M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DovizConvert/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Money Exchange";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -329,6 +330,7 @@
 				DEVELOPMENT_TEAM = CFBPBU763M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DovizConvert/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Money Exchange";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

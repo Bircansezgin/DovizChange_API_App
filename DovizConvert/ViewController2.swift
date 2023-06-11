@@ -65,7 +65,7 @@ class ViewController2: UIViewController {
                             if let rates = jsonResponse["results"] as? [String : Any]{
                                 print(rates)
                                 if let usd = rates["USD"] as? Double{
-                                    self.baseCurrentLabel.text = "USD: \(usd)"
+                                    self.baseCurrentLabel.text = "USD: \(usd)$"
                                 }
                             }
                         }

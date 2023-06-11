@@ -16,19 +16,11 @@ class ViewController: UIViewController {
     
     // 3 step.
     
-    @IBOutlet weak var cadLabel: UILabel!
+  
     @IBOutlet weak var euroLabel: UILabel!
-    
     @IBOutlet weak var gbpLabel: UILabel!
-
-    
-    @IBOutlet weak var jpyLabel: UILabel!
-    
     @IBOutlet weak var usdLabel: UILabel!
-
-    
     @IBOutlet weak var tryLabel: UILabel!
-        var tryLabelDeger: Double?
         
     var noOpTry = 0.0
     var noOpGPB = 0.0
@@ -51,21 +43,22 @@ class ViewController: UIViewController {
 
     @IBAction func getRatesButton(_ sender: Any) {
         
-        let alerts = UIAlertController(title: "USD ", message: "ile Islem", preferredStyle: .alert)
+        let alerts = UIAlertController(title: "USD ", message: "to Exchange", preferredStyle: .alert)
         let trybutton = UIAlertAction(title: "TRY", style: .default) { UIAlertAction in
             self.performSegue(withIdentifier: "go2", sender: self.noOpTry)
-        }
-        let gbpButton = UIAlertAction(title: "GBP", style: .default) { UIAlertAction in
-            self.performSegue(withIdentifier: "go2", sender: self.noOpGPB)
         }
         
         let euroButton = UIAlertAction(title: "EURO", style: .default) { UIAlertAction in
             self.performSegue(withIdentifier: "go2", sender: self.noOpEuro)
         }
         
+        let gbpButton = UIAlertAction(title: "GBP", style: .default) { UIAlertAction in
+            self.performSegue(withIdentifier: "go2", sender: self.noOpGPB)
+        }
+        
         alerts.addAction(trybutton)
-        alerts.addAction(gbpButton)
         alerts.addAction(euroButton)
+        alerts.addAction(gbpButton)
         self.present(alerts, animated: true)
         
    
@@ -98,26 +91,22 @@ class ViewController: UIViewController {
                         DispatchQueue.main.async {
                             if let rates = jsonResponse["results"] as? [String : Any]{
                                 
-                                
-                                if let cad = rates["CAD"] as? Double{
-                                    self.cadLabel.text = "CAD: \(cad)"
-                                }
                                 if let gbp = rates["GBP"] as? Double{
-                                    self.gbpLabel.text = "GPB: \(gbp)"
+                                    let formattedTgbp = String(format: "%.2f", gbp)
+                                    self.gbpLabel.text = "GPB: \(formattedTgbp)£"
                                     self.noOpGPB = gbp
                                 }
-                                if let jpy = rates["JPY"] as? Double{
-                                    self.jpyLabel.text = "JPY: \(jpy)"
-                                }
                                 if let usd = rates["USD"] as? Double{
-                                    self.usdLabel.text = "USD: \(usd)"
+                                    self.usdLabel.text = "USD: \(usd)$"
                                 }
                                 if let trY = rates["TRY"] as? Double{
-                                    self.tryLabel.text = "TRY: \(trY)"
+                                    let formattedTtry = String(format: "%.2f", trY)
+                                    self.tryLabel.text = "TRY: \(formattedTtry)₺"
                                     self.noOpTry = trY
                                 }
                                 if let eurO = rates["EUR"] as? Double{
-                                    self.euroLabel.text = "EURO: \(eurO)"
+                                    let formattedTeuro = String(format: "%.2f", eurO)
+                                    self.euroLabel.text = "EURO: \(formattedTeuro)€"
                                     self.noOpEuro = eurO
                                 }
                                 
