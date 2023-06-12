@@ -8,34 +8,42 @@
 import UIKit
 
 class ViewController2: UIViewController {
-
+    
     @IBOutlet weak var baseCurrentLabel: UILabel!
     @IBOutlet weak var secondCurrentLabel: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
+    @IBOutlet weak var lastUpdateLabel: UILabel!
     
+    var lastUpdate = ""
+    var moneyBirim = ""
+    var showMoney = ""
     var secondSendMoney = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(secondSendMoney)
-        secondCurrentLabel.text = "\(secondSendMoney)"
+        secondCurrentLabel.text = "\(secondSendMoney) \(moneyBirim)"
+        lastUpdateLabel.text = lastUpdate
         
-        startApi()
+        //startApi()
+        
+        baseCurrentLabel.text = "USD : 1.0$"
+        
     }
     
     @IBAction func calculateButtonClick(_ sender: Any) {
-    
-        if let secondMoney = Double(secondCurrentLabel.text ?? ""), let inputMoney = Double(amountTextField.text ?? "") {
-              let toplam = secondMoney * inputMoney
-              let formattedToplam = String(format: "%.2f", toplam)
-              let formattedSecondMoney = String(format: "%.2f", secondMoney)
-              let formattedInputMoney = String(format: "%.2f", inputMoney)
-              
-              let alerts = UIAlertController(title: "Exchange", message: "Result : \(formattedSecondMoney) * \(formattedInputMoney) = \(formattedToplam)", preferredStyle: .alert)
-              let ok = UIAlertAction(title: "Ok", style: .cancel)
-              alerts.addAction(ok)
-              self.present(alerts, animated: true)
-          }
+        
+        if let inputMoney = Double(amountTextField.text ?? "") {
+            let toplam = secondSendMoney * inputMoney
+            let formattedToplam = String(format: "%.2f", toplam)
+            //let formattedSecondMoney = String(format: "%.2f", secondMoney)
+            let formattedInputMoney = String(format: "%.2f", inputMoney)
+            
+            let alerts = UIAlertController(title: "Exchange", message: "\(formattedInputMoney) $ = \(formattedToplam) \(moneyBirim)", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "Ok", style: .cancel)
+            alerts.addAction(ok)
+            self.present(alerts, animated: true)
+        }
     }
     
     
@@ -43,7 +51,7 @@ class ViewController2: UIViewController {
     
     func startApi(){
         // 1) Request & Session (Istek Yollamak)
-
+        
         let url = URL(string: "https://api.fastforex.io/fetch-all?api_key=6431095421-46814537d2-rw2cuf")
         //"http://data.fixer.io/api/latest?access_key=65c9f5e1913452a764636d551a167c89"
         
@@ -68,8 +76,12 @@ class ViewController2: UIViewController {
                                     self.baseCurrentLabel.text = "USD: \(usd)$"
                                 }
                             }
+                            
+                            if let dateRates = jsonResponse["updated"] as? String{
+                                self.lastUpdateLabel.text = dateRates
+                            }
                         }
-                       
+                        
                     }catch{
                         print("Error")
                     }

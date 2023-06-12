@@ -7,6 +7,12 @@
 
 import UIKit
 
+/*
+ DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+     
+ }
+ */
+
 class ViewController: UIViewController {
     
     
@@ -17,26 +23,63 @@ class ViewController: UIViewController {
     // 3 step.
     
   
+    @IBOutlet weak var calculateButton: UIButton!
+    @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var euroLabel: UILabel!
     @IBOutlet weak var gbpLabel: UILabel!
     @IBOutlet weak var usdLabel: UILabel!
     @IBOutlet weak var tryLabel: UILabel!
-        
+    @IBOutlet weak var lastUpdateLabel: UILabel!
+            
+    var dateUpdate = ""
     var noOpTry = 0.0
     var noOpGPB = 0.0
     var noOpEuro = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startApi()
+
+        hidesLabel()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            self.unHidesLabel()
+            
+            self.startApi()
+        }
+
     }//Finish viewController
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "go2"{
             let des = segue.destination as! ViewController2
-            if let senderDeger = sender as? Double{
-                des.secondSendMoney = senderDeger
+            
+            if let senderString = sender as? String{
+                
+                if senderString == "TRY"{
+                    des.secondSendMoney = noOpTry
+                    des.moneyBirim = "TRY"
+                    des.lastUpdate = dateUpdate
+                }
+                
+                if senderString == "EUR"{
+                    des.secondSendMoney = noOpEuro
+                    des.moneyBirim = "EUR"
+                    des.lastUpdate = dateUpdate
+                
+                }
+                
+                if senderString == "GBP"{
+                    des.secondSendMoney = noOpGPB
+                    des.moneyBirim = "GBP"
+                    des.lastUpdate = dateUpdate
+                }
+                
+                
             }
+            
+           /* if let senderDeger = sender as? Double{
+                des.secondSendMoney = senderDeger
+            }*/
         }
     }
     
@@ -45,15 +88,15 @@ class ViewController: UIViewController {
         
         let alerts = UIAlertController(title: "USD ", message: "to Exchange", preferredStyle: .alert)
         let trybutton = UIAlertAction(title: "TRY", style: .default) { UIAlertAction in
-            self.performSegue(withIdentifier: "go2", sender: self.noOpTry)
+            self.performSegue(withIdentifier: "go2", sender: "TRY")
         }
         
         let euroButton = UIAlertAction(title: "EURO", style: .default) { UIAlertAction in
-            self.performSegue(withIdentifier: "go2", sender: self.noOpEuro)
+            self.performSegue(withIdentifier: "go2", sender: "EUR")
         }
         
         let gbpButton = UIAlertAction(title: "GBP", style: .default) { UIAlertAction in
-            self.performSegue(withIdentifier: "go2", sender: self.noOpGPB)
+            self.performSegue(withIdentifier: "go2", sender: "GBP")
         }
         
         alerts.addAction(trybutton)
@@ -66,6 +109,31 @@ class ViewController: UIViewController {
     }
     
     
+    func hidesLabel(){
+        loading.isHidden = false
+        loading.startAnimating()
+        
+        
+        euroLabel.isHidden = true
+        gbpLabel.isHidden = true
+        usdLabel.isHidden = true
+        tryLabel.isHidden = true
+        lastUpdateLabel.isHidden = true
+        calculateButton.isHidden = true
+    }
+    
+    func unHidesLabel(){
+        loading.isHidden = true
+        loading.startAnimating()
+        
+        
+        euroLabel.isHidden = false
+        gbpLabel.isHidden = false
+        usdLabel.isHidden = false
+        tryLabel.isHidden = false
+        lastUpdateLabel.isHidden = false
+        calculateButton.isHidden = false
+    }
     
     
     func startApi(){
@@ -110,10 +178,12 @@ class ViewController: UIViewController {
                                     self.noOpEuro = eurO
                                 }
                                 
-                            
                                 
+                                if let dateRates = jsonResponse["updated"] as? String{
+                                        self.lastUpdateLabel.text = dateRates
+                                    self.dateUpdate = dateRates
+                                }
                             }// Finish Rates!
-                            
                         }
                        
                     }catch{
