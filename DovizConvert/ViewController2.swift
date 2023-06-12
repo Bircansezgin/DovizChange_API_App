@@ -9,6 +9,9 @@ import UIKit
 
 class ViewController2: UIViewController {
     
+    
+    @IBOutlet weak var dolarsWeekRates: UILabel!
+    
     @IBOutlet weak var baseCurrentLabel: UILabel!
     @IBOutlet weak var secondCurrentLabel: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
@@ -21,12 +24,11 @@ class ViewController2: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(secondSendMoney)
+        
+        
         secondCurrentLabel.text = "\(secondSendMoney) \(moneyBirim)"
+        dolarsWeek(moneyUnit: moneyBirim)
         lastUpdateLabel.text = lastUpdate
-        
-        //startApi()
-        
         baseCurrentLabel.text = "USD : 1.0$"
         
     }
@@ -36,8 +38,9 @@ class ViewController2: UIViewController {
         if let inputMoney = Double(amountTextField.text ?? "") {
             let toplam = secondSendMoney * inputMoney
             let formattedToplam = String(format: "%.2f", toplam)
-            //let formattedSecondMoney = String(format: "%.2f", secondMoney)
             let formattedInputMoney = String(format: "%.2f", inputMoney)
+            
+            
             
             let alerts = UIAlertController(title: "Exchange", message: "\(formattedInputMoney) $ = \(formattedToplam) \(moneyBirim)", preferredStyle: .alert)
             let ok = UIAlertAction(title: "Ok", style: .cancel)
@@ -61,7 +64,10 @@ class ViewController2: UIViewController {
         
         let task = session.dataTask(with: url!) { data, response, error in
             if error != nil{
-                
+                let alerts = UIAlertController(title: "ERROR", message: error?.localizedDescription, preferredStyle: .alert)
+                let ok = UIAlertAction(title: "Ok", style: .cancel)
+                alerts.addAction(ok)
+                self.present(alerts, animated: true)
             }else{
                 // 2) Response & Data (IStek Almak)
                 if data != nil{
@@ -91,6 +97,49 @@ class ViewController2: UIViewController {
         
         task.resume()
         
+    }
+    
+    
+    func dolarsWeek(moneyUnit: String){
+        let apiKey = "6431095421-46814537d2-rw2cuf"
+        let urlStr = "https://api.fastforex.io/time-series?from=USD&to=\(moneyUnit)&interval=P1D&api_key=\(apiKey)"
+        
+        guard let url = URL(string: urlStr) else {
+            print("Geçersiz URL.")
+            return
+        }
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("İstek hatası: \(error.localizedDescription)")
+                return
+            }
+            else{
+                if data != nil{
+                    
+                    do {
+                        let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: Any]
+                        DispatchQueue.main.async {
+                            if let results = jsonResponse["results"] as? [String: Any],
+                               let tryRates = results["\(moneyUnit)"] as? [String: Double] {
+                                var ratesText = ""
+                                for (date, rate) in tryRates {
+                                    print("\(date), \(rate)")
+                                    ratesText += "\(date), \(rate)\n"
+                                }
+                                self.dolarsWeekRates.text = ratesText
+                            }
+                        }
+                    } catch {
+                        print("JSON dönüştürme hatası: \(error.localizedDescription)")
+                    }
+
+                }
+            }
+            
+        }
+        task.resume()
     }
     
 }

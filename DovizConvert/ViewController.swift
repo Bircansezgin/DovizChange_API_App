@@ -9,7 +9,7 @@ import UIKit
 
 /*
  DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-     
+ 
  }
  */
 
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     
     // 3 step.
     
-  
+    
     @IBOutlet weak var calculateButton: UIButton!
     @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var euroLabel: UILabel!
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var usdLabel: UILabel!
     @IBOutlet weak var tryLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
-            
+    
     var dateUpdate = ""
     var noOpTry = 0.0
     var noOpGPB = 0.0
@@ -38,17 +38,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         hidesLabel()
+       // dolarsWeek()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             self.unHidesLabel()
             
             self.startApi()
         }
-
+        
     }//Finish viewController
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "go2"{
             let des = segue.destination as! ViewController2
@@ -65,7 +66,7 @@ class ViewController: UIViewController {
                     des.secondSendMoney = noOpEuro
                     des.moneyBirim = "EUR"
                     des.lastUpdate = dateUpdate
-                
+                    
                 }
                 
                 if senderString == "GBP"{
@@ -77,13 +78,13 @@ class ViewController: UIViewController {
                 
             }
             
-           /* if let senderDeger = sender as? Double{
-                des.secondSendMoney = senderDeger
-            }*/
+            /* if let senderDeger = sender as? Double{
+             des.secondSendMoney = senderDeger
+             }*/
         }
     }
     
-
+    
     @IBAction func getRatesButton(_ sender: Any) {
         
         let alerts = UIAlertController(title: "USD ", message: "to Exchange", preferredStyle: .alert)
@@ -104,8 +105,8 @@ class ViewController: UIViewController {
         alerts.addAction(gbpButton)
         self.present(alerts, animated: true)
         
-   
-
+        
+        
     }
     
     
@@ -138,7 +139,7 @@ class ViewController: UIViewController {
     
     func startApi(){
         // 1) Request & Session (Istek Yollamak)
-
+        
         let url = URL(string: "https://api.fastforex.io/fetch-all?api_key=6431095421-46814537d2-rw2cuf")
         //"http://data.fixer.io/api/latest?access_key=65c9f5e1913452a764636d551a167c89"
         
@@ -180,12 +181,12 @@ class ViewController: UIViewController {
                                 
                                 
                                 if let dateRates = jsonResponse["updated"] as? String{
-                                        self.lastUpdateLabel.text = dateRates
+                                    self.lastUpdateLabel.text = dateRates
                                     self.dateUpdate = dateRates
                                 }
                             }// Finish Rates!
                         }
-                       
+                        
                     }catch{
                         print("Error")
                     }
@@ -195,6 +196,46 @@ class ViewController: UIViewController {
         
         task.resume()
         
+    }
+    
+    
+    func dolarsWeek(){
+        let apiKey = "6431095421-46814537d2-rw2cuf"
+        let urlStr = "https://api.fastforex.io/time-series?from=USD&to=TRY&interval=P1D&api_key=\(apiKey)"
+        
+        guard let url = URL(string: urlStr) else {
+            print("Geçersiz URL.")
+            return
+        }
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("İstek hatası: \(error.localizedDescription)")
+                return
+            }
+            else{
+                if data != nil{
+                    
+                    do {
+                        let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: Any]
+                        DispatchQueue.main.async {
+                            if let results = jsonResponse["results"] as? [String: Any],
+                               let tryRates = results["TRY"] as? [String: Double] {
+                                for (date, rate) in tryRates {
+                                    print("Date: \(date), Rate: \(rate)")
+                                }
+                            }
+                        }
+                    } catch {
+                        print("JSON dönüştürme hatası: \(error.localizedDescription)")
+                    }
+
+                }
+            }
+            
+        }
+        task.resume()
     }
     
 }
