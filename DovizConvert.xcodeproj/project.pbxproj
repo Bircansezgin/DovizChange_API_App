@@ -15,6 +15,8 @@
 		848F27022A1FDA6C00881C94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848F27002A1FDA6C00881C94 /* Main.storyboard */; };
 		848F27042A1FDA6D00881C94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848F27032A1FDA6D00881C94 /* Assets.xcassets */; };
 		848F27072A1FDA6D00881C94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848F27052A1FDA6D00881C94 /* LaunchScreen.storyboard */; };
+		84951F712A37C9B6003A37AC /* cellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84951F702A37C9B6003A37AC /* cellViewController.swift */; };
+		84951F732A37D502003A37AC /* gecisDoor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84951F722A37D502003A37AC /* gecisDoor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		848F27032A1FDA6D00881C94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		848F27062A1FDA6D00881C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		848F27082A1FDA6D00881C94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84951F702A37C9B6003A37AC /* cellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cellViewController.swift; sourceTree = "<group>"; };
+		84951F722A37D502003A37AC /* gecisDoor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gecisDoor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				848F26FA2A1FDA6C00881C94 /* AppDelegate.swift */,
 				848F26FC2A1FDA6C00881C94 /* SceneDelegate.swift */,
 				848F26FE2A1FDA6C00881C94 /* ViewController.swift */,
+				84951F702A37C9B6003A37AC /* cellViewController.swift */,
+				84951F722A37D502003A37AC /* gecisDoor.swift */,
 				84026FF12A3557C100AECBF5 /* ViewController2.swift */,
 				848F27002A1FDA6C00881C94 /* Main.storyboard */,
 				84026FEF2A35560800AECBF5 /* currentClass.swift */,
@@ -145,7 +151,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				84026FF22A3557C100AECBF5 /* ViewController2.swift in Sources */,
+				84951F732A37D502003A37AC /* gecisDoor.swift in Sources */,
 				848F26FF2A1FDA6C00881C94 /* ViewController.swift in Sources */,
+				84951F712A37C9B6003A37AC /* cellViewController.swift in Sources */,
 				848F26FB2A1FDA6C00881C94 /* AppDelegate.swift in Sources */,
 				84026FF02A35560800AECBF5 /* currentClass.swift in Sources */,
 				848F26FD2A1FDA6C00881C94 /* SceneDelegate.swift in Sources */,

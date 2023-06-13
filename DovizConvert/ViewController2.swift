@@ -28,11 +28,23 @@ class ViewController2: UIViewController {
         
         secondCurrentLabel.text = "\(secondSendMoney) \(moneyBirim)"
         dolarsWeek(moneyUnit: moneyBirim)
-        lastUpdateLabel.text = lastUpdate
+        lastUpdateLabel.text = "Updated : \(lastUpdate)"
         baseCurrentLabel.text = "USD : 1.0$"
         
-    }
+        self.navigationItem.title = "USD  TO  \(moneyBirim)"
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(turnOffAll))
+        view.addGestureRecognizer(gesture)
+                                             
+    }// Finish ViewDidLoad!
     
+        @objc func turnOffAll(){
+            view.endEditing(true)
+        }
+                                             
+                                             
+                                             
+                                             
     @IBAction func calculateButtonClick(_ sender: Any) {
         
         if let inputMoney = Double(amountTextField.text ?? "") {
@@ -42,10 +54,15 @@ class ViewController2: UIViewController {
             
             
             
-            let alerts = UIAlertController(title: "Exchange", message: "\(formattedInputMoney) $ = \(formattedToplam) \(moneyBirim)", preferredStyle: .alert)
+            let alerts = UIAlertController(title: "Exchange Results", message: "\n\(formattedInputMoney) $ = \(formattedToplam) \(moneyBirim)\n\nUpdated Date: \(lastUpdate)", preferredStyle: .alert)
             let ok = UIAlertAction(title: "Ok", style: .cancel)
             alerts.addAction(ok)
             self.present(alerts, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Hata", message: "Lütfen geçerli bir sayı girin.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Tamam", style: .default, handler: nil)
+            alert.addAction(okAction)
+            present(alert, animated: true, completion: nil)
         }
     }
     
