@@ -83,6 +83,7 @@ class ViewController: UIViewController {
              }*/
         }
     }
+
     
     
     @IBAction func getRatesButton(_ sender: Any) {
@@ -100,9 +101,28 @@ class ViewController: UIViewController {
             self.performSegue(withIdentifier: "go2", sender: "GBP")
         }
         
+        let rubButton = UIAlertAction(title: "RUB", style: .default) { UIAlertAction in
+            self.performSegue(withIdentifier: "go2", sender: "RUB")
+        }
+        
+        let dinarButton = UIAlertAction(title: "KWD", style: .default) { UIAlertAction in
+            self.performSegue(withIdentifier: "go2", sender: "KWD")
+        }
+        
+        let jpyButton = UIAlertAction(title: "JPY", style: .default) { UIAlertAction in
+            self.performSegue(withIdentifier: "go2", sender: "JPY")
+        }
+        
         alerts.addAction(trybutton)
         alerts.addAction(euroButton)
         alerts.addAction(gbpButton)
+        alerts.addAction(rubButton)
+        alerts.addAction(dinarButton)
+        alerts.addAction(jpyButton)
+        
+        
+        let canceB = UIAlertAction(title: "Cancel", style: .destructive)
+        alerts.addAction(canceB)
         self.present(alerts, animated: true)
         
         
